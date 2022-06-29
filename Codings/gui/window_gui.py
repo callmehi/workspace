@@ -23,8 +23,8 @@ def cal_time():
     tonow = datetime.datetime.now()
     pc.copy(tonow.strftime("%H%M%S"))
 
-# 步驟四： 進入事件處理迴圈。
-dateLabel = tkinter.Label(mainWin, text="[日期][Date]  ")
+# 步驟四： 進入事件處理迴圈
+dateLabel = tkinter.Label(mainWin, text="[日期][Date]  ") 
 
 
 dateButton = tkinter.Button(mainWin, text="按這個, 將""日期""拷貝", command=cal_date)
