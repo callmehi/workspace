@@ -1,0 +1,9 @@
+import openpyxl
+
+fn = 'new_excel.xlsx'
+
+wb = openpyxl.Workbook()
+wb.create_sheet("Mysheet1", 2) # 新增工作表Mysheet1並指定放置位置
+wb.create_sheet("Mysheet0", 1) # 新增工作表Mysheet0並指定放置位置
+
+wb.save(fn)
