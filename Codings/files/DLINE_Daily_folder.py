@@ -14,9 +14,9 @@ from tkinter import messagebox
 
 ### [主程式碼]
 def event_handler():
-    #需要備份的檔案
+    #需要備份並"壓縮"的檔案目錄(1/2)
     source=r'D:/temp/daliy_backup/'
-    #儲存備份檔案的位置
+    #儲存"備份壓縮檔"的位置(1/2)
     target_dir=r'D:/temp/daliy_backup/'
 
     messagebox.showinfo("INFO", "Starting backup = " + myoptinDate.get(), detail="please wait for another window")
@@ -30,7 +30,7 @@ mainWin.title("備份Logs小幫手[5天内]")
 #[視窗]視窗大小
 mainWin.geometry("330x130")
 mainWin['bg'] = 'white'
-#[視窗]定義myoptionmenu為近5天的日期,成為一個list選項
+#[視窗]定義myoptionmenu為近5天的日期,成為一個list的5個選項
 myoptionmenuList = []
 for a in range(5):
     myoption_tmp = datetime.date.today() - datetime.timedelta(days=a)
@@ -58,9 +58,9 @@ def backup_logs():
     # 而不會轉意為換行符。由於正則表示式和 \ 會有衝突，因此，當一個字串使用了正則表示式後，
     # 最好在前面加上'r'
 
-    #需要備份的路徑
+    #需要備份並"壓縮"的檔案目錄(2/2)
     source=r'D:/temp/daliy_backup/'
-    #備份檔的路徑
+    #儲存"備份壓縮檔"的位置(2/2)
     target_dir=r'D:/temp/daliy_backup/'
     
     #[備份位置]P_logs
