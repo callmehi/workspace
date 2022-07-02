@@ -1,6 +1,6 @@
 import os
 
-file_path = 'D:/temp/daliy_backup/20220624'
+file_path = 'D:/temp/daliy_backup'
 
 get_file_list(file_path)
 # print dir_list

@@ -23,6 +23,53 @@ def event_handler():
     backup_logs()
     messagebox.showinfo("INFO", "Backup done!", detail="backup date = " + myoptinDate.get() + '\n'+'backup path =' + target_dir + myoptinDate.get())
 
+### [時間比對]
+#抓出[這個目錄]的[所有檔案]:把[最後修改時間]和[自己選定的時間]配對檔案丟出
+def checkFilesTime_selectDate(ab_dir):
+    target_xxx = ab_dir
+    global file_list
+    file_list =[]
+    for f in os.listdir(target_xxx):
+        t = time.localtime(os.path.getmtime(f'{target_xxx}\{f}'))
+        datetimeString = ''
+        datetimeString += str(t.tm_year)
+        datetimeString += str(t.tm_mon).zfill(2)
+        datetimeString += str(t.tm_mday).zfill(2)
+        # datetimeString += ' '
+        # datetimeString += str(t.tm_hour).zfill(2)
+        # datetimeString += ':'
+        # datetimeString += str(t.tm_min).zfill(2)
+        # datetimeString += ':'
+        # datetimeString += str(t.tm_sec).zfill(2)
+        myoptinDate_connect = "{Y}{m}{d}".format(Y=str(myoptinDate.get()[0:4]), m=str(myoptinDate.get()[5:7]), d=str(myoptinDate.get()[8:10]))  
+
+        if datetimeString == myoptinDate_connect:         
+            file_list += [f]
+    return file_list
+
+#抓出[這個目錄]的[所有檔案]:把[今天的檔案]丟出
+def checkFilesTime_today(ab_dir):
+    target_xxx = ab_dir
+    global file_list
+    file_list =[]
+    for f in os.listdir(target_xxx):
+        t = time.localtime(os.path.getmtime(f'{target_xxx}\{f}'))
+        datetimeString = ''
+        datetimeString += str(t.tm_year)
+        datetimeString += str(t.tm_mon).zfill(2)
+        datetimeString += str(t.tm_mday).zfill(2)
+        # datetimeString += ' '
+        # datetimeString += str(t.tm_hour).zfill(2)
+        # datetimeString += ':'
+        # datetimeString += str(t.tm_min).zfill(2)
+        # datetimeString += ':'
+        # datetimeString += str(t.tm_sec).zfill(2)
+        myoptinDate_connect_tmp = str(datetime.date.today())
+        myoptinDate_connect = "{Y}{m}{d}".format(Y=str(myoptinDate_connect_tmp[0:4]), m=str(myoptinDate_connect_tmp[5:7]), d=str(myoptinDate_connect_tmp[8:10]))  
+        if datetimeString == myoptinDate_connect:         
+            file_list += [f]
+    return file_list
+
 #[視窗]標題大小
 mainWin = tk.Tk()
 #[視窗]視窗標題
@@ -75,35 +122,57 @@ def backup_logs():
     TK_dir=r'/E_logs/ToolKit'
     #[備份位置]E_logs/SC
     SC_dir=r'/E_logs/SpiritConsole'
-    #[備份位置]Screenshot
-    screenShots_dir=r'/ScreenShots'
     #[備份位置]sensors
-    sensors_dir=r'/sensors'
+    sensors_dir=r'/Sensors'
     #[備份位置]exposure
     exposure_dir=r'/exposure'
     #[備份位置]efficiency
     efficiency_dir=r'/efficiency'
+
+    #[備份位置]Screenshot
+    screenShots_dir=r'/ScreenShots'
     
-    # #[原檔位置]E_logs
-    # ori_E_logs_dir=r'/E_logs'
+
     #[原檔位置]P_logs
+    #ori_P_logs_dir=r'Z:/???'
     ori_P_logs_dir=r'D:/temp/Test_folder'
+
     #[原檔位置]E_logs/GPU
+    # ori_GPU_dir=r'E:/Logs/Gpu'
     ori_GPU_dir=r'D:/temp/Test_folder'
-    # #[原檔位置]E_logs/IPED
-    # ori_IPED_dir=r'/E_logs/IPED'
+
+    # #[原檔位置]E_logs/IPED_1
+    # ori_IPED_dir=r'E:/Logs/IPED'
+    ori_IPED_dir_1=r'D:/temp/Test_folder/archive'
+
+    # #[原檔位置]E_logs/IPED_2
+    # ori_IPED_dir=r'E:/Logs/IPED/archive'
+    ori_IPED_dir_2=r'D:/temp/Test_folder/'
+
     #[原檔位置]E_logs/TK
+    # ori_TK_dir=r'E:/Logs/Toolkit'
     ori_TK_dir=r'D:/temp/Test_folder'
+
     #[原檔位置]E_logs/SC
+    # ori_SC_dir=r'E:/Logs/SpiritConsole'
     ori_SC_dir=r'D:/temp/Test_folder'
-    # #[原檔位置]Screenshot
-    # ori_screenShots_dir=r'/ScreenShots'
+
     # #[原檔位置]sensors
-    # ori_sensors_dir=r'/sensors'
+    # ori_sensors_dir=r'E:/Logs/Sensors'
+    ori_sensors_dir=r'D:/temp/Test_folder/Sensors'
+
     # #[原檔位置]exposure
+    # ori_exposure_dir=r'E:/Logs/Exposure'
     # ori_exposure_dir=r'/exposure'
+
     # #[原檔位置]efficiency
+    # ori_efficiency_dir=r'E:/Logs/Efficiency'
     # ori_efficiency_dir=r'/efficiency'
+
+    # #[原檔位置]Screenshot
+    # ori_screenShots_dir=r'C:/Users/DLine/Pictures/Screenshots'
+    ori_screenShots_dir=r'D:/temp/Test_folder/Screenshot'
+
 
 
     # myoptinDate的格式轉換
@@ -126,12 +195,9 @@ def backup_logs():
     #判斷是否生成了名為today的資料夾
     if not os.path.exists(today):
         os.mkdir(today)
-    print('ok create:',today)
-
 
     # ===========================================================================================
-    print('開始備份檔案到本地目錄')
-    # E disk logs folder = E_logs_dir
+    # E disk logs folder = E_logs_dir #創建E_logs目錄
     if not os.path.exists(today+E_logs_dir):
         os.mkdir(today+E_logs_dir)
     
@@ -162,7 +228,20 @@ def backup_logs():
     # IPED logs folder = IPED_dir
     if not os.path.exists(today+IPED_dir):
         os.mkdir(today+IPED_dir)
-    copy2('C:/installAgent.log', today+IPED_dir)
+    # Python 的標準函式「glob」可以使用名稱與路徑的方式，查找出匹配條件的檔案或資料夾，
+    # 查找出檔案後，搭配其他函式庫 (例如 os 標準函式庫) ，就能做到像是批次重新命名、批次刪除...等的動作。
+
+    # 備份IPED/archive裏的備份檔
+    dirPathPattern = ori_IPED_dir_1+r"/IPEDRK_Errors_" + myoptinDate_connect + r"-*"  
+    ipedLogCopyFiles_1 = glob.glob(dirPathPattern)
+    for f in ipedLogCopyFiles_1:
+        # f[-29:] 用來截取IPEDRK的目錄名稱
+        copytree(f, today+IPED_dir+"/"+f[-29:])
+
+    # 備份IPED裏的檔案
+    ipedLogCopyFiles_2 = glob.glob(os.path.join(ori_IPED_dir_2, "IPEDRK_*.*"))
+    for f in ipedLogCopyFiles_2:
+        copy2(f, today+IPED_dir)
 
     # ToolKit logs folder = TK_dir
     if not os.path.exists(today+TK_dir):
@@ -183,12 +262,20 @@ def backup_logs():
     # Screenshots folder = screenShots_dir
     if not os.path.exists(today+screenShots_dir):
         os.mkdir(today+screenShots_dir)
-    copy2('C:/installAgent.log', today+screenShots_dir)
+    # 備份選定日期的所有screenshots
+    checkFilesTime_selectDate(ori_screenShots_dir)
+    for f in file_list:
+        copy2(ori_screenShots_dir+"/"+f, today+screenShots_dir)
+    # 備份今天的所有screenshots
+    checkFilesTime_today(ori_screenShots_dir)
+    for f in file_list:
+        copy2(ori_screenShots_dir+"/"+f, today+screenShots_dir)    
 
     # sensors folder = sensors_dir
     if not os.path.exists(today+sensors_dir):
         os.mkdir(today+sensors_dir)
-    copy2('C:/installAgent.log', today+sensors_dir)
+    copy2(ori_sensors_dir+"/sensors.tsv", today+sensors_dir)
+    copy2(ori_sensors_dir+"/measurewheel.tsv", today+sensors_dir)
 
     # exposure folder = exposure_dir
     if not os.path.exists(today+exposure_dir):
@@ -209,31 +296,12 @@ def backup_logs():
     #       zip_command = '"C:\\Program Files\\7-Zip\\7z.exe" a -tzip {0} {1} '.format(target,' '.join(source))
     os.chdir('C:/Program Files/7-Zip')
     zip_command = '7z a -tzip {0} {1}{2}'.format(target,''.join(source),''.join(myoptinDate.get()))
-
-    print('zip command is:')
     print(zip_command)
-    print('running:')
 
     #是os.system函式是使zip_command命令從系統中執行,執行成功返回0,執行失敗返回錯誤程式碼
     if os.system(zip_command)==0:
         print('success')
     else:
         print('error')
-
-    # #秀出這個目錄的最後修改時間和名稱
-    target_xxx = 'D:/temp/daliy_backup/' + myoptinDate.get()
-    for f in os.listdir(target_xxx):
-        t = time.localtime(os.path.getmtime(f'{target_xxx}\{f}'))
-        datetimeString = ''
-        datetimeString += str(t.tm_year)
-        datetimeString += str(t.tm_mon).zfill(2)
-        datetimeString += str(t.tm_mday).zfill(2)
-        datetimeString += ' '
-        datetimeString += str(t.tm_hour).zfill(2)
-        datetimeString += ':'
-        datetimeString += str(t.tm_min).zfill(2)
-        datetimeString += ':'
-        datetimeString += str(t.tm_sec).zfill(2)
-        print(datetimeString, f)
 
 mainWin.mainloop()
