@@ -1,0 +1,9 @@
+import openpyxl
+
+fn = 'new_excel.xlsx'
+wb = openpyxl.load_workbook(fn)
+
+print(wb.sheetnames)
+
+print(wb.active)
+print(wb.active.title)
